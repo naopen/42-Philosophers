@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:53:07 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/20 23:06:27 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/20 23:18:32 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	init_mutexes(t_data *data)
 		i++;
 	}
 	if (pthread_mutex_init(&data->output_mutex, NULL) != 0)
+		return (error_exit(data, "Error: Mutex init failed"));
+	if (pthread_mutex_init(&data->eat_count_mutex, NULL) != 0)
 		return (error_exit(data, "Error: Mutex init failed"));
 	return (0);
 }

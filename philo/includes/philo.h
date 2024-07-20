@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/20 23:07:29 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/20 23:16:04 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_data
 	long long		start_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	output_mutex;
+	pthread_mutex_t	eat_count_mutex;
 	t_philo			*philos;
 }					t_data;
 

@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/20 23:06:31 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/20 23:20:33 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(int argc, char **argv)
 	while (++i < data.num_philo)
 		pthread_mutex_destroy(&data.forks[i]);
 	pthread_mutex_destroy(&data.output_mutex);
+	pthread_mutex_destroy(&data.eat_count_mutex);
 	free(data.forks);
 	free(data.philos);
 	return (0);

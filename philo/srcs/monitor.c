@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:21 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/20 23:06:35 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/20 23:20:03 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ int	check_eat_count(t_data *data)
 		count = 0;
 		while (i < data->num_philo)
 		{
+			pthread_mutex_lock(&data->eat_count_mutex);
 			if (data->philos[i].eat_count >= data->num_must_eat)
 				count++;
+			pthread_mutex_unlock(&data->eat_count_mutex);
 			i++;
 		}
 		if (count == data->num_philo)

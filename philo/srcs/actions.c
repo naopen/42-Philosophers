@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:56:16 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/20 23:06:03 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/20 23:18:50 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ void	*philosopher_routine(void *arg)
 		philo_eat(philo, data);
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_lock(&data->eat_count_mutex);
 		philo->eat_count++;
+		pthread_mutex_unlock(&data->eat_count_mutex);
 		philo_sleep(philo, data);
 		philo_think(philo, data);
 	}
