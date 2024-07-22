@@ -6,7 +6,7 @@
 #    By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/20 21:45:26 by nkannan           #+#    #+#              #
-#    Updated: 2024/07/20 22:58:30 by nkannan          ###   ########.fr        #
+#    Updated: 2024/07/22 21:24:15 by nkannan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC_DIR = srcs
 OBJ_DIR = objs
 INC_DIR = includes
 
-SRC = actions.c actions_eat.c init.c main.c monitor.c utils.c
+SRC = actions.c init.c main.c monitor.c utils.c
 OBJ = $(SRC:.c=.o)
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))

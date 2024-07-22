@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:53:07 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/20 23:18:32 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/22 21:18:13 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	init_mutexes(t_data *data)
 	}
 	if (pthread_mutex_init(&data->output_mutex, NULL) != 0)
 		return (error_exit(data, "Error: Mutex init failed"));
-	if (pthread_mutex_init(&data->eat_count_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data->state_mutex, NULL) != 0)
 		return (error_exit(data, "Error: Mutex init failed"));
 	return (0);
 }
@@ -64,8 +64,10 @@ int	init_philos(t_data *data)
 		data->philos[i].id = i + 1;
 		data->philos[i].eat_count = 0;
 		data->philos[i].last_eat_time = 0;
+		data->philos[i].state = THINKING;
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->num_philo];
+		data->philos[i].data = data;
 		i++;
 	}
 	return (0);
