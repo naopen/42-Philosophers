@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:21 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 22:32:08 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/22 22:46:23 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ void	print_action(t_philo *philo, int action)
 					philo->id);
 		else if (action == SLEEPING)
 			printf("%lld %d is sleeping\n", get_time()
+					- philo->data->start_time, philo->id);
+		else if (action == THINKING)
+			printf("%lld %d is thinking\n", get_time()
 					- philo->data->start_time, philo->id);
 		else if (action == DEAD)
 			printf("%lld %d died\n", get_time() - philo->data->start_time,
