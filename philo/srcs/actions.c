@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:56:16 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 21:21:53 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/22 22:31:48 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,14 @@ void	*philosopher_routine(void *arg)
 	while (!philo->data->is_finished)
 	{
 		philo_take_forks(philo);
+		if (philo->data->is_finished)
+			break ;
 		philo_eat(philo);
+		if (philo->data->is_finished)
+			break ;
 		philo_sleep(philo);
+		if (philo->data->is_finished)
+			break ;
 		print_action(philo, THINKING);
 	}
 	return (NULL);
@@ -48,10 +54,20 @@ int	create_threads(t_data *data)
 
 void	philo_take_forks(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
-	print_action(philo, 1);
-	pthread_mutex_lock(philo->right_fork);
-	print_action(philo, 1);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_action(philo, HAS_FORK);
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, HAS_FORK);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, HAS_FORK);
+		pthread_mutex_lock(philo->right_fork);
+		print_action(philo, HAS_FORK);
+	}
 }
 
 void	philo_eat(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:53:07 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 21:18:13 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/07/22 22:31:30 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,11 @@ int	init_mutexes(t_data *data)
 			* data->num_philo);
 	if (!data->forks)
 		return (error_exit(data, "Error: Malloc failed"));
-	i = 0;
-	while (i < data->num_philo)
+	i = -1;
+	while (++i < data->num_philo)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 			return (error_exit(data, "Error: Mutex init failed"));
-		i++;
 	}
 	if (pthread_mutex_init(&data->output_mutex, NULL) != 0)
 		return (error_exit(data, "Error: Mutex init failed"));
@@ -58,8 +57,8 @@ int	init_philos(t_data *data)
 	data->philos = (t_philo *)malloc(sizeof(t_philo) * data->num_philo);
 	if (!data->philos)
 		return (error_exit(data, "Error: Malloc failed"));
-	i = 0;
-	while (i < data->num_philo)
+	i = -1;
+	while (++i < data->num_philo)
 	{
 		data->philos[i].id = i + 1;
 		data->philos[i].eat_count = 0;
@@ -68,7 +67,6 @@ int	init_philos(t_data *data)
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->num_philo];
 		data->philos[i].data = data;
-		i++;
 	}
 	return (0);
 }

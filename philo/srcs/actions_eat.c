@@ -17,12 +17,12 @@ void	philo_take_forks(t_philo *philo, t_data *data)
 	pthread_mutex_lock(philo->left_fork);
 	pthread_mutex_lock(&data->output_mutex);
 	printf("%lld %d has taken a fork\n", get_time() - data->start_time,
-		philo->id);
+			philo->id);
 	pthread_mutex_unlock(&data->output_mutex);
 	pthread_mutex_lock(philo->right_fork);
 	pthread_mutex_lock(&data->output_mutex);
 	printf("%lld %d has taken a fork\n", get_time() - data->start_time,
-		philo->id);
+			philo->id);
 	pthread_mutex_unlock(&data->output_mutex);
 }
 
