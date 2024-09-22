@@ -6,88 +6,120 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/22 09:33:44 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 02:10:48 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <pthread.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/time.h>
-# include <unistd.h>
+# include <limits.h> // intmax_t
+# include <pthread.h> // pthread
+# include <stdbool.h> // bool
+# include <stdint.h> // INT_MAX/MIN
+# include <stdio.h> // printf
+# include <stdlib.h> // free, malloc
+# include <sys/time.h> // gettimeofday
+# include <unistd.h> // write, usleep
 
-# define THINKING 0
-# define EATING 1
-# define SLEEPING 2
-# define DEAD 3
-# define FORK_REQUEST 1
-# define HAS_FORK 1
+# define ERR_SETUP "Error: invalid arguments\n"
+# define ERR_GEN "Error\n"
+# define MSG_FORK " has taken a fork"
+# define MSG_EAT " is eating"
+# define MSG_SLEEP " is sleeping"
+# define MSG_THINK " is thinking"
+# define MSG_DIED " died"
+# define MSG_ENOUGH " has eaten enough"
+# define LEFT 0
+# define RIGHT 1
 
-typedef struct s_fork
+typedef enum e_msg_type {
+	FORK = 0,
+	EAT,
+	SLEEP,
+	THINK,
+	DEAD,
+	ENOUGH
+}			t_msg_type;
+
+typedef struct s_init
 {
-	pthread_mutex_t		mutex;
-	bool				is_dirty;
-	int					owner_id;
-}						t_fork;
+	bool		fork_init;
+	bool		philos_init;
+}				t_init;
 
-typedef struct s_philo	t_philo;
-
-typedef struct s_data
+typedef struct s_setup
 {
-	int					num_philo;
-	int					time_to_die;
-	int					time_to_eat;
-	int					time_to_sleep;
-	int					num_must_eat;
-	long long			start_time;
-	bool				is_finished;
-	bool				someone_dead;
-	t_fork				*forks;
-	pthread_mutex_t		output_mutex;
-	pthread_mutex_t		print_mutex;
-	pthread_mutex_t		state_mutex;
-	t_philo				*philos;
-}						t_data;
+	int				num_philo;
+	int				msec_to_die;
+	int				msec_to_eat;
+	int				msec_to_sleep;
+	int				must_eat;
+	int				full_philos;
+	uintmax_t		program_start_ms;
+	bool			someone_dead;
+	pthread_mutex_t	msg_lock;
+	pthread_mutex_t	dead_lock;
+	pthread_mutex_t	*forks;
+	struct s_init	initialized;
+}					t_setup;
 
 typedef struct s_philo
 {
-	int					id;
-	long long			last_eat_time;
-	int					eat_count;
-	int					state;
-	pthread_t			thread;
-	t_fork				*left_fork;
-	t_fork				*right_fork;
-	t_data				*data;
-}						t_philo;
+	pthread_t		id;
+	int				seat;
+	bool			active;
+	int				times_eaten;
+	uintmax_t		last_ate_msec;
+	uintmax_t		deadline;
+	struct s_setup	*setup;
+	pthread_mutex_t	eat_lock;
+	pthread_mutex_t	*p_forks[2];
+}				t_philo;
 
-// utils.c
-int						error_exit(t_data *data, char *message);
-long long				get_time(void);
-int						calculate_wait_time(int id, int num_philo);
-int						ft_atoi(const char *str);
+// check.c
+void		*philo_check(void *philo_arg);
+
+// exit.c
+int			print_error(const char *message);
+int			clean_exit(t_setup *setup, t_philo **philos);
+
+// fork.c
+void		release_forks(t_philo *philo);
+int			take_forks(t_philo *philo);
 
 // init.c
-int						init_data(t_data *data, int argc, char **argv);
-int						init_mutexes(t_data *data);
-int						init_philos(t_data *data);
-int						init_forks(t_data *data);
+int			init_philos(t_setup *setup, t_philo **philos);
+int			init_forks(t_setup *setup);
+int			init_philos_and_mutexes(t_setup *setup, t_philo **philos);
+void		init_setup(t_setup *setup);
 
-// actions.c
-void					*philosopher_routine(void *arg);
-int						create_threads(t_data *data);
-void					philo_take_forks(t_philo *philo);
-void					philo_eat(t_philo *philo);
-void					philo_sleep(t_philo *philo);
-void					request_fork(t_philo *philo, t_fork *fork);
+// main.c
+int			log_status(t_philo *philo, const char *message,
+				t_msg_type type);
 
-// monitoring.c
-int						check_death(t_data *data);
-int						check_eat_count(t_data *data);
-void					print_action(t_philo *philo, int action);
+// philo_utils.c
+int			check_lock(t_philo *philo, pthread_mutex_t *lock, const char *fn);
+int			update_last_meal_time(t_philo *philo);
+bool		has_reached_meal_limit(t_philo *philo);
+bool		is_simulation_over(t_philo *philo);
+void		usleep_accurate(uintmax_t usec);
+
+// philo.c
+void		*philo_routine(void *philo_arg);
+
+// prog_utils.c
+const char	*get_philo_colour(int philo_seat);
+int			ft_strcmp(void *s1, void *s2);
+bool		ft_iswhitespace(const char c);
+int			ft_skipws(const char **str, int i);
+bool		str_to_int_safe(const char *num_str, int *num);
+
+// setup.c
+int			parse_setup_args(t_setup *setup, const char **args);
+
+// time.c
+uintmax_t	get_current_time_us(void);
+uintmax_t	get_elapsed_time_ms(uintmax_t start);
 
 #endif

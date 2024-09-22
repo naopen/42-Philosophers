@@ -5,82 +5,93 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 22:53:07 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 22:45:57 by nkannan          ###   ########.fr       */
+/*   Created: 2024/09/23 01:55:06 by nkannan           #+#    #+#             */
+/*   Updated: 2024/09/23 01:55:12 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	init_data(t_data *data, int argc, char **argv)
+void	init_philo_forks(int idx, t_philo *philo, pthread_mutex_t *locks,
+			pthread_mutex_t **p_locks)
 {
-	if (argc != 5 && argc != 6)
-		return (error_exit(data, "Error: Invalid arguments"));
-	data->num_philo = ft_atoi(argv[1]);
-	data->time_to_die = ft_atoi(argv[2]);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
-	data->num_must_eat = -1;
-	if (argc == 6)
-		data->num_must_eat = ft_atoi(argv[5]);
-	if (data->num_philo <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
-		|| data->time_to_sleep <= 0 || (argc == 6 && data->num_must_eat <= 0))
-		return (error_exit(data, "Error: Invalid arguments"));
-	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
-		return (error_exit(data, "Error: Mutex init failed"));
+	p_locks[LEFT] = &locks[idx];
+	if (idx == philo->setup->num_philo - 1)
+		p_locks[RIGHT] = &locks[0];
+	else
+		p_locks[RIGHT] = &locks[idx + 1];
+	return ;
+}
+
+int	init_philos(t_setup *setup, t_philo **philos)
+{
+	int				i;
+
+	i = 0;
+	*philos = NULL;
+	*philos = malloc(sizeof(t_philo) * setup->num_philo);
+	if (*philos == NULL)
+		return (1);
+	while (i < setup->num_philo)
+	{
+		(*philos)[i].id = NULL;
+		(*philos)[i].seat = i + 1;
+		(*philos)[i].active = false;
+		(*philos)[i].times_eaten = 0;
+		(*philos)[i].last_ate_msec = get_elapsed_time_ms(0);
+		(*philos)[i].deadline = (*philos)[i].last_ate_msec + setup->msec_to_die;
+		(*philos)[i].setup = setup;
+		if (pthread_mutex_init(&(*philos)[i].eat_lock, NULL) != 0)
+			return (1);
+		init_philo_forks(i, &(*philos)[i], setup->forks, (*philos)[i].p_forks);
+		i++;
+	}
+	setup->initialized.philos_init = 1;
 	return (0);
 }
 
-int	init_mutexes(t_data *data)
+int	init_forks(t_setup *setup)
 {
 	int	i;
 
-	data->forks = (t_fork *)malloc(sizeof(t_fork) * data->num_philo);
-	if (!data->forks)
-		return (error_exit(data, "Error: Malloc failed"));
-	i = -1;
-	while (++i < data->num_philo)
+	i = 0;
+	setup->forks = malloc(sizeof(pthread_mutex_t) * setup->num_philo);
+	if (setup->forks == NULL)
+		return (1);
+	while (i < setup->num_philo)
 	{
-		if (pthread_mutex_init(&data->forks[i].mutex, NULL) != 0)
-			return (error_exit(data, "Error: Mutex init failed"));
+		if (pthread_mutex_init(&(setup->forks[i]), NULL) != 0)
+			return (1);
+		i++;
 	}
-	if (pthread_mutex_init(&data->output_mutex, NULL) != 0)
-		return (error_exit(data, "Error: Mutex init failed"));
-	if (pthread_mutex_init(&data->state_mutex, NULL) != 0)
-		return (error_exit(data, "Error: Mutex init failed"));
+	setup->initialized.fork_init = 1;
 	return (0);
 }
 
-int	init_philos(t_data *data)
+int	init_philos_and_mutexes(t_setup *setup, t_philo **philos)
 {
-	int	i;
-
-	data->philos = (t_philo *)malloc(sizeof(t_philo) * data->num_philo);
-	if (!data->philos)
-		return (error_exit(data, "Error: Malloc failed"));
-	i = -1;
-	while (++i < data->num_philo)
-	{
-		data->philos[i].id = i + 1;
-		data->philos[i].eat_count = 0;
-		data->philos[i].last_eat_time = 0;
-		data->philos[i].state = THINKING;
-		data->philos[i].left_fork = &data->forks[i];
-		data->philos[i].right_fork = &data->forks[(i + 1) % data->num_philo];
-		data->philos[i].data = data;
-	}
+	if (init_forks(setup))
+		return (1);
+	if (init_philos(setup, philos))
+		return (1);
 	return (0);
 }
 
-int	init_forks(t_data *data)
+void	init_setup(t_setup *setup)
 {
-	int	i;
-
-	i = -1;
-	while (++i < data->num_philo)
-	{
-		data->forks[i].is_dirty = true;
-		data->forks[i].owner_id = i + 1;
-	}
-	return (0);
+	setup->num_philo = 0;
+	setup->msec_to_die = 0;
+	setup->msec_to_eat = 0;
+	setup->msec_to_sleep = 0;
+	setup->must_eat = 0;
+	setup->full_philos = 0;
+	setup->program_start_ms = get_elapsed_time_ms(0);
+	setup->someone_dead = false;
+	if (pthread_mutex_init(&setup->msg_lock, NULL) != 0)
+		return ;
+	if (pthread_mutex_init(&setup->dead_lock, NULL) != 0)
+		return ;
+	setup->initialized.fork_init = false;
+	setup->initialized.philos_init = false;
+	return ;
 }

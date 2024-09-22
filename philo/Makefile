@@ -6,7 +6,7 @@
 #    By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/20 21:45:26 by nkannan           #+#    #+#              #
-#    Updated: 2024/07/22 22:32:32 by nkannan          ###   ########.fr        #
+#    Updated: 2024/09/23 01:52:26 by nkannan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC_DIR = srcs
 OBJ_DIR = objs
 INC_DIR = includes
 
-SRC = actions.c init.c main.c monitor.c utils.c
+SRC = check.c exit.c fork.c init.c main.c message.c philo_utils.c philo.c setup.c string_utils.c time.c
 OBJ = $(SRC:.c=.o)
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))

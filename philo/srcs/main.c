@@ -5,46 +5,50 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/22 09:52:42 by nkannan          ###   ########.fr       */
+/*   Created: 2024/09/23 01:55:16 by nkannan           #+#    #+#             */
+/*   Updated: 2024/09/23 01:55:16 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
+int	start_philo_threads(t_setup *setup, t_philo *philos)
+{
+	int			i;
+
+	i = 0;
+	while (philos && i < setup->num_philo)
+	{
+		if (pthread_create(&philos[i].id, NULL, &philo_routine,
+				&philos[i]) != 0)
+			return (1);
+		i++;
+	}
+	setup->program_start_ms = get_elapsed_time_ms(0);
+	i = 0;
+	while (i < setup->num_philo)
+	{
+		pthread_join(philos[i].id, NULL);
+		i++;
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
-	t_data	data;
-	int		i;
+	t_setup	setup;
+	t_philo	*philos;
 
-	if (init_data(&data, argc, argv) != 0)
-		return (1);
-	if (init_mutexes(&data) != 0)
-		return (1);
-	if (init_forks(&data) != 0)
-		return (1);
-	if (init_philos(&data) != 0)
-		return (1);
-	if (create_threads(&data) != 0)
-		return (1);
-	pthread_t death_monitor_thread;
-	pthread_t eat_monitor_thread;
-
-	pthread_create(&death_monitor_thread, NULL, (void *(*)(void *))check_death, &data);
-	pthread_create(&eat_monitor_thread, NULL, (void *(*)(void *))check_eat_count, &data);
-
-	pthread_join(death_monitor_thread, NULL);
-	pthread_join(eat_monitor_thread, NULL);
-	i = -1;
-	while (++i < data.num_philo)
-		pthread_join(data.philos[i].thread, NULL);
-	i = -1;
-	while (++i < data.num_philo)
-		pthread_mutex_destroy(&data.forks[i].mutex);
-	pthread_mutex_destroy(&data.output_mutex);
-	pthread_mutex_destroy(&data.state_mutex);
-	pthread_mutex_destroy(&data.print_mutex);
-	free(data.forks);
-	free(data.philos);
+	if (argc > 4 && argc < 7)
+	{
+		init_setup(&setup);
+		if (parse_setup_args(&setup, (const char **)(argv + 1)))
+			return (print_error(ERR_SETUP) | clean_exit(&setup, NULL));
+		if (init_philos_and_mutexes(&setup, &philos))
+			return (print_error(ERR_GEN) | clean_exit(&setup, &philos));
+		if (start_philo_threads(&setup, philos))
+			return (print_error(ERR_GEN) | clean_exit(&setup, &philos));
+		clean_exit(&setup, &philos);
+	}
 	return (0);
 }
