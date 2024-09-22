@@ -32,7 +32,7 @@ int	check_death(t_data *data)
 			}
 			pthread_mutex_unlock(&data->state_mutex);
 		}
-		usleep(1000);
+		usleep(500);
 	}
 	return (0);
 }

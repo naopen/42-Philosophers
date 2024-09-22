@@ -27,9 +27,14 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(&data) != 0)
 		return (1);
-	pthread_t monitor_thread;
-	pthread_create(&monitor_thread, NULL, (void *(*)(void *))check_death, &data);
-	pthread_detach(monitor_thread);
+	pthread_t death_monitor_thread;
+	pthread_t eat_monitor_thread;
+
+	pthread_create(&death_monitor_thread, NULL, (void *(*)(void *))check_death, &data);
+	pthread_create(&eat_monitor_thread, NULL, (void *(*)(void *))check_eat_count, &data);
+
+	pthread_join(death_monitor_thread, NULL);
+	pthread_join(eat_monitor_thread, NULL);
 	i = -1;
 	while (++i < data.num_philo)
 		pthread_join(data.philos[i].thread, NULL);
