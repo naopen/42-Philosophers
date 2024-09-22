@@ -41,8 +41,20 @@ void	*philo_check(void *philo_arg)
 			return ((void *)1);
 		current_time = get_elapsed_time_ms(0);
 		if (current_time > philo->deadline)
+		{
+			pthread_mutex_unlock(&philo->eat_lock);
 			return (mark_philosopher_dead(philo));
+		}
 		pthread_mutex_unlock(&philo->eat_lock);
+
+		if (check_lock(philo, &philo->setup->dead_lock, "philo_check") != 0)
+			return ((void *)1);
+		if (philo->setup->someone_dead)
+		{
+			pthread_mutex_unlock(&philo->setup->dead_lock);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->setup->dead_lock);
 		if (philo->setup->must_eat > 0 && has_reached_meal_limit(philo))
 			return (mark_philosopher_full(philo));
 		usleep(1000);
