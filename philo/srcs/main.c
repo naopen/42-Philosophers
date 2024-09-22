@@ -16,7 +16,9 @@ int	start_philo_threads(t_setup *setup, t_philo *philos)
 {
 	int			i;
 
+	pthread_mutex_lock(&setup->dead_lock);
 	setup->program_start_ms = get_elapsed_time_ms(0);
+	pthread_mutex_unlock(&setup->dead_lock);
 	i = 0;
 	while (i < setup->num_philo)
 	{

@@ -27,7 +27,7 @@ void	print_message(t_philo *philo, const char *message, t_msg_type type)
 	const char	*color;
 
 	time = get_elapsed_time_ms(philo->setup->program_start_ms);
-	printf("%s%ju ms | Philosopher [%d] %s\033[0m", color, time, philo->seat,
+	printf("%ju ms | Philosopher [%d] %s", time, philo->seat,
 		message);
 	if (philo->setup->must_eat && type == EAT)
 		printf(" (%d/%d)", philo->times_eaten + 1, philo->setup->must_eat);
