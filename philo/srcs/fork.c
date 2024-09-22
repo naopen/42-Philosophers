@@ -37,7 +37,7 @@ int	take_forks(t_philo *philo)
 	}
 
 	start_time = get_elapsed_time_ms(0);
-	while (get_elapsed_time_ms(start_time) < philo->setup->msec_to_die / 2) // タイムアウト設定(例: 死にかけ時間の半分)
+	while (get_elapsed_time_ms(start_time) < (uintmax_t)(philo->setup->msec_to_die / 2)) // タイムアウト設定(例: 死にかけ時間の半分)
 	{
 		if (check_lock(philo, philo->p_forks[first_fork], "take_forks") != 0)
 			return (1);
