@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 22:51:32 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/22 09:33:44 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_philo
 // utils.c
 int						error_exit(t_data *data, char *message);
 long long				get_time(void);
+int						calculate_wait_time(int id, int num_philo);
 int						ft_atoi(const char *str);
 
 // init.c
