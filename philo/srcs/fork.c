@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:46:14 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 01:46:41 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 06:47:55 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,34 @@ void	release_forks(t_philo *philo)
 
 int	take_forks(t_philo *philo)
 {
-	int	side;
+	int				first_fork;
+	int				second_fork;
+	uintmax_t		start_time;
 
-	if (philo->seat % 2 == 0)
-		side = LEFT;
-	else
-		side = RIGHT;
-	if (check_lock(philo, philo->p_forks[side], "take_forks") != 0)
-		return (1);
-	log_status(philo, MSG_FORK, FORK);
-	if (check_lock(philo, philo->p_forks[!side], "take_forks") != 0)
+	if (philo->seat % 2 != 0)
 	{
-		pthread_mutex_unlock(philo->p_forks[side]);
-		return (1);
+		first_fork = RIGHT;
+		second_fork = LEFT;
 	}
-	log_status(philo, MSG_FORK, FORK);
-	return (0);
+	else
+	{
+		first_fork = LEFT;
+		second_fork = RIGHT;
+	}
+
+	start_time = get_elapsed_time_ms(0);
+	while (get_elapsed_time_ms(start_time) < philo->setup->msec_to_die / 2) // タイムアウト設定(例: 死にかけ時間の半分)
+	{
+		if (check_lock(philo, philo->p_forks[first_fork], "take_forks") != 0)
+			return (1);
+		if (check_lock(philo, philo->p_forks[second_fork], "take_forks") == 0)
+		{
+			log_status(philo, MSG_FORK, FORK);
+			log_status(philo, MSG_FORK, FORK);
+			return (0);
+		}
+		pthread_mutex_unlock(philo->p_forks[first_fork]);
+		usleep(10); // 少し待機
+	}
+	return (1); // タイムアウト
 }
