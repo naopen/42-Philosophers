@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 02:16:19 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 02:16:23 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 03:20:38 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ bool	is_simulation_over(t_philo *philo)
 	return (done);
 }
 
-// reduces unreliability of usleep by sleeping in smaller increments
+// usleep in microseconds
 
 void	usleep_accurate(uintmax_t usec)
 {

@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:55:24 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 02:24:37 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 03:33:00 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,6 @@ void	print_message(t_philo *philo, const char *message, t_msg_type type)
 	const char	*color;
 
 	time = get_elapsed_time_ms(philo->setup->program_start_ms);
-	if (type == FORK)
-		color = "\033[0;33m";
-	else if (type == EAT)
-		color = "\033[0;32m";
-	else if (type == SLEEP)
-		color = "\033[0;34m";
-	else if (type == THINK)
-		color = "\033[0;36m";
-	else if (type == DEAD)
-		color = "\033[0;31m";
-	else if (type == ENOUGH)
-		color = "\033[0;35m";
-	else
-		color = "\033[0m";
 	printf("%s%ju ms | Philosopher [%d] %s\033[0m", color, time, philo->seat,
 		message);
 	if (philo->setup->must_eat && type == EAT)

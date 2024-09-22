@@ -6,14 +6,14 @@
 #    By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/20 21:45:26 by nkannan           #+#    #+#              #
-#    Updated: 2024/09/23 01:52:26 by nkannan          ###   ########.fr        #
+#    Updated: 2024/09/23 03:29:21 by nkannan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread  -MMD -MP
+CFLAGS = -Wall -Wextra -Werror -pthread  -MMD -MP -g -fsanitize=thread
 SANITIZE = -fsanitize=address -g
 
 SRC_DIR = srcs
