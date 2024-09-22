@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:55:24 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 03:33:00 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 05:36:53 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	mark_as_dead(t_philo *philo)
 void	print_message(t_philo *philo, const char *message, t_msg_type type)
 {
 	uintmax_t	time;
-	const char	*color;
 
 	time = get_elapsed_time_ms(philo->setup->program_start_ms);
 	printf("%ju ms | Philosopher [%d] %s", time, philo->seat,
