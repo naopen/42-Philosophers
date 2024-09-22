@@ -58,9 +58,9 @@ int	check_eat_count(t_data *data)
 		}
 		if (count == data->num_philo)
 		{
-			pthread_mutex_lock(&data->output_mutex);
+			pthread_mutex_lock(&data->state_mutex);
 			data->is_finished = true;
-			pthread_mutex_unlock(&data->output_mutex);
+			pthread_mutex_unlock(&data->state_mutex);
 			return (1);
 		}
 		usleep(100);
