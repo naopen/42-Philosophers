@@ -15,10 +15,11 @@
 void	*philosopher_routine(void *arg)
 {
 	t_philo	*philo;
+	int		wait_time;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0)
-		usleep(1000);
+	wait_time = calculate_wait_time(philo->id, philo->data->num_philo);
+	usleep(wait_time);
 	while (!philo->data->is_finished)
 	{
 		print_action(philo, THINKING);

@@ -28,6 +28,11 @@ long long	get_time(void)
 	return (((tv.tv_sec * 1000 * 1000) + tv.tv_usec) / 1000);
 }
 
+int	calculate_wait_time(int id, int num_philo)
+{
+	return (id * 1000 / num_philo);
+}
+
 int	ft_atoi(const char *str)
 {
 	int	i;
