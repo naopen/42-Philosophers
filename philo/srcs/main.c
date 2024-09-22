@@ -27,12 +27,11 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(&data) != 0)
 		return (1);
-	if (check_death(&data) == 0 && check_eat_count(&data) == 0)
-	{
-		i = -1;
-		while (++i < data.num_philo)
-			pthread_join(data.philos[i].thread, NULL);
-	}
+	check_death(&data);
+	check_eat_count(&data);
+	i = -1;
+	while (++i < data.num_philo)
+		pthread_join(data.philos[i].thread, NULL);
 	i = -1;
 	while (++i < data.num_philo)
 		pthread_mutex_destroy(&data.forks[i].mutex);

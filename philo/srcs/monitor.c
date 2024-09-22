@@ -22,7 +22,7 @@ int	check_death(t_data *data)
 		while (++i < data->num_philo && !data->is_finished)
 		{
 			pthread_mutex_lock(&data->state_mutex);
-			if (get_time() - data->philos[i].last_eat_time >= data->time_to_die)
+			if ((get_time() - data->philos[i].last_eat_time) >= data->time_to_die)
 			{
 				data->philos[i].state = DEAD;
 				print_action(&data->philos[i], DEAD);
@@ -50,10 +50,12 @@ int	check_eat_count(t_data *data)
 		count = 0;
 		while (i < data->num_philo)
 		{
-			pthread_mutex_lock(&data->state_mutex);
 			if (data->philos[i].eat_count >= data->num_must_eat)
+			{
+				pthread_mutex_lock(&data->state_mutex);
 				count++;
-			pthread_mutex_unlock(&data->state_mutex);
+				pthread_mutex_unlock(&data->state_mutex);
+			}
 			i++;
 		}
 		if (count == data->num_philo)
