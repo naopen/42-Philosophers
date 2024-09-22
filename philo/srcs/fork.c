@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:46:14 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 06:47:55 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 06:50:42 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	take_forks(t_philo *philo)
 	}
 
 	start_time = get_elapsed_time_ms(0);
-	while (get_elapsed_time_ms(start_time) < (uintmax_t)(philo->setup->msec_to_die / 2)) // タイムアウト設定(例: 死にかけ時間の半分)
+	while (get_elapsed_time_ms(start_time) < (uintmax_t)(philo->setup->msec_to_die / 100)) // タイムアウト設定
 	{
 		if (check_lock(philo, philo->p_forks[first_fork], "take_forks") != 0)
 			return (1);

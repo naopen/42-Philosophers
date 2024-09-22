@@ -5,6 +5,9 @@ philo_bonus/philo_bonus
 LazyPhilosophersTester/
 Philosophers-tester/
 
+export.py
+repository_contents.txt
+
 # Executables
 *.out
 *.log
