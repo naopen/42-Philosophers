@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:21 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/22 09:48:29 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/22 09:56:00 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	check_death(t_data *data)
 	return (0);
 }
 
-#include <stdio.h>
 int	check_eat_count(t_data *data)
 {
 	int	i;
@@ -45,7 +44,6 @@ int	check_eat_count(t_data *data)
 
 	if (data->num_must_eat == -1)
 		return (0);
-	printf("check_eat_count\n");
 	while (!data->is_finished)
 	{
 		i = 0;

@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 22:45:29 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/22 09:52:42 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(&data) != 0)
 		return (1);
-	check_death(&data);
 	check_eat_count(&data);
+	check_death(&data);
 	i = -1;
 	while (++i < data.num_philo)
 		pthread_join(data.philos[i].thread, NULL);
