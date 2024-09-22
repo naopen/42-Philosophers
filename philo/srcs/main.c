@@ -16,6 +16,7 @@ int	start_philo_threads(t_setup *setup, t_philo *philos)
 {
 	int			i;
 
+	setup->program_start_ms = get_elapsed_time_ms(0);
 	i = 0;
 	while (philos && i < setup->num_philo)
 	{
@@ -24,9 +25,7 @@ int	start_philo_threads(t_setup *setup, t_philo *philos)
 			return (1);
 		i++;
 	}
-	setup->program_start_ms = get_elapsed_time_ms(0);
-	i = 0;
-	while (i < setup->num_philo)
+	while (philos && i < setup->num_philo)
 	{
 		pthread_join(philos[i].id, NULL);
 		i++;
