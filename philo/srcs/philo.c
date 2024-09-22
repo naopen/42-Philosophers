@@ -43,7 +43,10 @@ void	*philo_routine(void *philo_arg)
 	pthread_t	tid;
 
 	philo = (t_philo *)philo_arg;
+	if (check_lock(philo, &philo->eat_lock, "philo_routine") != 0)
+		return ((void *)1);
 	philo->active = true;
+	pthread_mutex_unlock(&philo->eat_lock);
 	if (pthread_create(&tid, NULL, &philo_check, philo_arg) != 0)
 		return ((void *)1);
 	if (philo->seat % 2 == 0)
@@ -60,7 +63,10 @@ void	*philo_routine(void *philo_arg)
 			usleep(1000);
 		}
 	}
+	if (check_lock(philo, &philo->eat_lock, "philo_routine") != 0)
+		return ((void *)1);
 	philo->active = false;
+	pthread_mutex_unlock(&philo->eat_lock);
 	pthread_join(tid, NULL);
 	return (NULL);
 }

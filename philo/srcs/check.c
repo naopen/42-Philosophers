@@ -35,10 +35,13 @@ void	*philo_check(void *philo_arg)
 	philo = (t_philo *)philo_arg;
 	while (1)
 	{
-		if (!philo->active)
-			break ;
 		if (check_lock(philo, &philo->eat_lock, "philo_check") != 0)
 			return ((void *)1);
+		if (!philo->active)
+		{
+			pthread_mutex_unlock(&philo->eat_lock);
+			break ;
+		}
 		current_time = get_elapsed_time_ms(0);
 		if (current_time > philo->deadline)
 		{
