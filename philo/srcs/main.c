@@ -43,6 +43,7 @@ int	main(int argc, char **argv)
 		pthread_mutex_destroy(&data.forks[i].mutex);
 	pthread_mutex_destroy(&data.output_mutex);
 	pthread_mutex_destroy(&data.state_mutex);
+	pthread_mutex_destroy(&data.print_mutex);
 	free(data.forks);
 	free(data.philos);
 	return (0);

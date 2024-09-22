@@ -45,8 +45,10 @@ typedef struct s_data
 	int					num_must_eat;
 	long long			start_time;
 	bool				is_finished;
+	bool				someone_dead;
 	t_fork				*forks;
 	pthread_mutex_t		output_mutex;
+	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		state_mutex;
 	t_philo				*philos;
 }						t_data;

@@ -27,6 +27,7 @@ int	check_death(t_data *data)
 				data->philos[i].state = DEAD;
 				print_action(&data->philos[i], DEAD);
 				data->is_finished = true;
+				data->someone_dead = true;
 				pthread_mutex_unlock(&data->state_mutex);
 				return (1);
 			}
@@ -70,7 +71,7 @@ int	check_eat_count(t_data *data)
 
 void	print_action(t_philo *philo, int action)
 {
-	pthread_mutex_lock(&philo->data->output_mutex);
+	pthread_mutex_lock(&philo->data->print_mutex);
 	if (!philo->data->is_finished)
 	{
 		if (action == HAS_FORK)
@@ -89,5 +90,5 @@ void	print_action(t_philo *philo, int action)
 			printf("%lld %d died\n", get_time() - philo->data->start_time,
 					philo->id);
 	}
-	pthread_mutex_unlock(&philo->data->output_mutex);
+	pthread_mutex_unlock(&philo->data->print_mutex);
 }

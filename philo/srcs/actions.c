@@ -57,19 +57,19 @@ void	philo_take_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-		request_fork(philo, philo->right_fork);
+		request_fork(philo, philo->left_fork);
 		if (philo->data->is_finished)
 			return ;
-		request_fork(philo, philo->left_fork);
+		request_fork(philo, philo->right_fork);
 		if (philo->data->is_finished)
 			return ;
 	}
 	else
 	{
-		request_fork(philo, philo->left_fork);
+		request_fork(philo, philo->right_fork);
 		if (philo->data->is_finished)
 			return ;
-		request_fork(philo, philo->right_fork);
+		request_fork(philo, philo->left_fork);
 		if (philo->data->is_finished)
 			return ;
 	}

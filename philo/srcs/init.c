@@ -26,6 +26,8 @@ int	init_data(t_data *data, int argc, char **argv)
 	if (data->num_philo <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
 		|| data->time_to_sleep <= 0 || (argc == 6 && data->num_must_eat <= 0))
 		return (error_exit(data, "Error: Invalid arguments"));
+	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
+		return (error_exit(data, "Error: Mutex init failed"));
 	return (0);
 }
 
