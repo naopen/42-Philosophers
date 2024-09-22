@@ -18,16 +18,22 @@ int	start_philo_threads(t_setup *setup, t_philo *philos)
 
 	setup->program_start_ms = get_elapsed_time_ms(0);
 	i = 0;
-	while (philos && i < setup->num_philo)
+	i = 0;
+	while (i < setup->num_philo)
 	{
 		if (pthread_create(&philos[i].id, NULL, &philo_routine,
 				&philos[i]) != 0)
 			return (1);
 		i++;
 	}
-	while (philos && i < setup->num_philo)
+	i = 0;
+	while (i < setup->num_philo)
 	{
-		pthread_join(philos[i].id, NULL);
+		if (pthread_join(philos[i].id, NULL) != 0)
+		{
+			fprintf(stderr, "Error joining thread %d\n", i);
+			return (1);
+		}
 		i++;
 	}
 	return (0);
