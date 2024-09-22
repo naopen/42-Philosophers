@@ -45,9 +45,9 @@ int	ft_skipws(const char **str, int i)
 	return (1);
 }
 
-// Converts num_str to int representation and saves in *num arg.
-// Returns TRUE on success. If invalid input or outside int limits,
-// returns FALSE and doesn't change *num.
+// Converts string to int
+// Returns 0 on success
+// Returns 1 on failure
 
 bool	str_to_int_safe(const char *num_str, int *num)
 {
