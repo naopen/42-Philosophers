@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:55:24 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 02:21:00 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 02:24:37 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	print_message(t_philo *philo, const char *message, t_msg_type type)
 	else
 		color = "\033[0m";
 	printf("%s%ju ms | Philosopher [%d] %s\033[0m", color, time, philo->seat,
-			message);
+		message);
 	if (philo->setup->must_eat && type == EAT)
 		printf(" (%d/%d)", philo->times_eaten + 1, philo->setup->must_eat);
 	printf("\n");
