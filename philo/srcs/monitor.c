@@ -50,16 +50,12 @@ int	check_eat_count(t_data *data)
 	{
 		i = 0;
 		count = 0;
-		printf("i: %d\n", i);
-		printf("count: %d\n", count);
 		while (i < data->num_philo)
 		{
+			pthread_mutex_lock(&data->state_mutex);
 			if (data->philos[i].eat_count >= data->num_must_eat)
-			{
-				pthread_mutex_lock(&data->state_mutex);
 				count++;
-				pthread_mutex_unlock(&data->state_mutex);
-			}
+			pthread_mutex_unlock(&data->state_mutex);
 			i++;
 		}
 		if (count == data->num_philo)
