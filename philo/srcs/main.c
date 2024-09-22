@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:55:16 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 01:55:16 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 05:03:16 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	start_philo_threads(t_setup *setup, t_philo *philos)
 	int			i;
 
 	setup->program_start_ms = get_elapsed_time_ms(0);
-	i = 0;
 	i = 0;
 	while (i < setup->num_philo)
 	{
