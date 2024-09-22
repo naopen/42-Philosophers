@@ -27,8 +27,9 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(&data) != 0)
 		return (1);
-	check_eat_count(&data);
-	check_death(&data);
+	pthread_t monitor_thread;
+	pthread_create(&monitor_thread, NULL, (void *(*)(void *))check_death, &data);
+	pthread_detach(monitor_thread);
 	i = -1;
 	while (++i < data.num_philo)
 		pthread_join(data.philos[i].thread, NULL);
