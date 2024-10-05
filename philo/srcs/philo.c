@@ -6,9 +6,10 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:55:39 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 01:55:39 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 15:25:04 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/philo.h"
 
 int	philo_think(t_philo *philo)
@@ -40,15 +41,12 @@ int	philo_eat(t_philo *philo)
 void	*philo_routine(void *philo_arg)
 {
 	t_philo		*philo;
-	pthread_t	tid;
 
 	philo = (t_philo *)philo_arg;
 	if (check_lock(philo, &philo->eat_lock, "philo_routine") != 0)
 		return ((void *)1);
 	philo->active = true;
 	pthread_mutex_unlock(&philo->eat_lock);
-	if (pthread_create(&tid, NULL, &philo_check, philo_arg) != 0)
-		return ((void *)1);
 	if (philo->seat % 2 == 0)
 		usleep(1000);
 	if (update_last_meal_time(philo) == 0)
@@ -60,13 +58,12 @@ void	*philo_routine(void *philo_arg)
 				|| philo_sleep(philo)
 				|| philo_think(philo))
 				break ;
-			usleep(1000);
+			// usleepはmain関数に移動
 		}
 	}
 	if (check_lock(philo, &philo->eat_lock, "philo_routine") != 0)
 		return ((void *)1);
 	philo->active = false;
 	pthread_mutex_unlock(&philo->eat_lock);
-	pthread_join(tid, NULL);
 	return (NULL);
 }

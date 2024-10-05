@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:55:06 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 01:55:12 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 15:24:10 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	init_philos(t_setup *setup, t_philo **philos)
 		i++;
 	}
 	setup->initialized.philos_init = 1;
+    setup->philos = *philos; // setupにphilosへのポインタを保存
 	return (0);
 }
 

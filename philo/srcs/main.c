@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:55:16 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 05:03:16 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 15:33:11 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	start_philo_threads(t_setup *setup, t_philo *philos)
 {
 	int			i;
+    pthread_t   monitor_thread;
 
 	pthread_mutex_lock(&setup->dead_lock);
 	setup->program_start_ms = get_elapsed_time_ms(0);
@@ -27,6 +28,13 @@ int	start_philo_threads(t_setup *setup, t_philo *philos)
 			return (1);
 		i++;
 	}
+    // 全ての哲学者のスレッド生成後に、監視スレッドを起動
+    if (pthread_create(&monitor_thread, NULL, &monitor_philosophers, &setup) != 0)
+        return (1);
+
+    // スレッド作成後、一定時間待機
+    usleep(100 * setup->num_philo);
+
 	i = 0;
 	while (i < setup->num_philo)
 	{
@@ -36,8 +44,44 @@ int	start_philo_threads(t_setup *setup, t_philo *philos)
 			return (1);
 		}
 		i++;
+        // usleepをここに移動
+        usleep(1000);
 	}
+    // 監視スレッドの終了を待つ
+    if (pthread_join(monitor_thread, NULL) != 0)
+    {
+        fprintf(stderr, "Error joining monitor thread\n");
+        return (1);
+    }
 	return (0);
+}
+
+// 監視スレッドの関数
+void *monitor_philosophers(void *setup_arg)
+{
+    t_setup *setup = (t_setup *)setup_arg;
+    t_philo *philos = setup->philos;
+    int i;
+
+    while (1)
+    {
+        i = 0;
+        // 全ての哲学者の状態をチェック
+        while (i < setup->num_philo)
+        {
+            // philo_checkの戻り値をチェックし、餓死を検出したらループを抜ける
+            if (philo_check(&philos[i]) != NULL)
+                break ;
+            i++;
+        }
+
+        // 餓死または全員満腹になったらループを抜ける
+        if (setup->someone_dead || setup->full_philos == setup->num_philo)
+            break;
+
+        usleep(1000);
+    }
+    return (NULL);
 }
 
 int	main(int argc, char **argv)

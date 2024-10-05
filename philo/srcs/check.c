@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 01:46:02 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 01:46:05 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 15:33:27 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,17 @@ void	*mark_philosopher_full(t_philo *philo)
 
 void	*mark_philosopher_dead(t_philo *philo)
 {
-	log_status(philo, MSG_DIED, DEAD);
+	if (check_lock(philo, &philo->setup->dead_lock, "mark_as_dead") != 0)
+		return ((void *)1);
+	if (philo->setup->someone_dead == false) // すでに死亡済みの場合はメッセージを出力しない
+	{
+		log_status(philo, MSG_DIED, DEAD);
+		philo->setup->someone_dead = true;
+	}
+	pthread_mutex_unlock(&philo->setup->dead_lock);
 	pthread_mutex_unlock(&philo->eat_lock);
 	release_forks(philo);
-	return (NULL);
+	return (philo); // 餓死を検出したらphiloへのポインタを返す
 }
 
 void	*philo_check(void *philo_arg)
@@ -33,34 +40,19 @@ void	*philo_check(void *philo_arg)
 	uintmax_t	current_time;
 
 	philo = (t_philo *)philo_arg;
-	while (1)
+	if (check_lock(philo, &philo->eat_lock, "philo_check") != 0)
+		return ((void *)1);
+	if (!philo->active)
 	{
-		if (check_lock(philo, &philo->eat_lock, "philo_check") != 0)
-			return ((void *)1);
-		if (!philo->active)
-		{
-			pthread_mutex_unlock(&philo->eat_lock);
-			break ;
-		}
-		current_time = get_elapsed_time_ms(0);
-		if (current_time > philo->deadline)
-		{
-			pthread_mutex_unlock(&philo->eat_lock);
-			return (mark_philosopher_dead(philo));
-		}
 		pthread_mutex_unlock(&philo->eat_lock);
-
-		if (check_lock(philo, &philo->setup->dead_lock, "philo_check") != 0)
-			return ((void *)1);
-		if (philo->setup->someone_dead)
-		{
-			pthread_mutex_unlock(&philo->setup->dead_lock);
-			return (NULL);
-		}
-		pthread_mutex_unlock(&philo->setup->dead_lock);
-		if (philo->setup->must_eat > 0 && has_reached_meal_limit(philo))
-			return (mark_philosopher_full(philo));
-		usleep(1000);
+		return (NULL);
 	}
-	return (NULL);
+	current_time = get_elapsed_time_ms(0);
+	if (current_time > philo->deadline)
+	{
+		pthread_mutex_unlock(&philo->eat_lock);
+		return (mark_philosopher_dead(philo)); // 餓死を検出したらphiloへのポインタを返す
+	}
+	pthread_mutex_unlock(&philo->eat_lock);
+	return (NULL); // 餓死していない場合はNULLを返す
 }

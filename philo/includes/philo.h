@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/23 02:10:48 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/09/23 15:25:42 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,18 @@ typedef enum e_msg_type {
 	DEAD,
 	ENOUGH
 }			t_msg_type;
+typedef struct s_philo
+{
+	pthread_t		id;
+	int				seat;
+	bool			active;
+	int				times_eaten;
+	uintmax_t		last_ate_msec;
+	uintmax_t		deadline;
+	struct s_setup	*setup;
+	pthread_mutex_t	eat_lock;
+	pthread_mutex_t	*p_forks[2];
+}				t_philo;
 
 typedef struct s_init
 {
@@ -62,20 +74,9 @@ typedef struct s_setup
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	*forks;
 	struct s_init	initialized;
+    t_philo          *philos; // philosへのポインタを追加
 }					t_setup;
 
-typedef struct s_philo
-{
-	pthread_t		id;
-	int				seat;
-	bool			active;
-	int				times_eaten;
-	uintmax_t		last_ate_msec;
-	uintmax_t		deadline;
-	struct s_setup	*setup;
-	pthread_mutex_t	eat_lock;
-	pthread_mutex_t	*p_forks[2];
-}				t_philo;
 
 // check.c
 void		*philo_check(void *philo_arg);
@@ -97,6 +98,9 @@ void		init_setup(t_setup *setup);
 // main.c
 int			log_status(t_philo *philo, const char *message,
 				t_msg_type type);
+int             start_philo_threads(t_setup *setup, t_philo *philos);
+void            *monitor_philosophers(void *setup_arg);
+
 
 // philo_utils.c
 int			check_lock(t_philo *philo, pthread_mutex_t *lock, const char *fn);
