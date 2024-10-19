@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:52:42 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 22:19:28 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 22:39:33 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,22 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
+int	ft_isalpha(int c)
+{
+	if ((c <= 'z' && c >= 'a')
+		|| (c <= 'Z' && c >= 'A'))
+		return (1);
+	return (0);
+}
+
+int	ft_tolower(int c)
+{
+	if ('A' <= c && c <= 'Z')
+		return (c + 32);
+	return (c);
+}
+
+
 long	ft_atoi(const char *str)
 {
 	long	result;
@@ -26,7 +42,7 @@ long	ft_atoi(const char *str)
 
 	result = ft_strtol(str, &endptr, 10);
 	if (*endptr != '\0' || result > INT_MAX || result < INT_MIN)
-		return (-1);  // エラー値として-1を返す
+		return (-1);
 	return (result);
 }
 

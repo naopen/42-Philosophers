@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 21:08:50 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 22:39:46 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void				connect_philosophers_in_circle(t_philo *philo);
 t_philo				*ft_lstnew(int id, t_data *data);
 
 int					ft_isdigit(int c);
+int					ft_isalpha(int c);
+int					ft_tolower(int c);
 long				ft_atoi(const char *str);
 long				ft_strtol(const char *str, char **endptr, int base);
 
