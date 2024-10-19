@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 21:08:50 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 02:41:01 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	*routine(void *philo_data)
 		waiter(100);
 	while (1)
 	{
-		if (!check_dead(philo))
+		if (!check_dead(philo) || check_all_finished(philo))
 			break ;
 		if (!philo_eat(philo))
-			break ;
+			continue ;
 		if (!philo_sleep(philo))
 			break ;
 		if (!philo_think(philo))

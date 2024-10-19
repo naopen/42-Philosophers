@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 22:39:46 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 02:43:27 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_data
 int					check_argv(char **argv);
 int					check_dead(t_philo *philo);
 int					check_finished(t_philo *philo);
+int					check_all_finished(t_philo *philo);
 int					dead_verify(t_philo *philo);
 
 int					destroy_philosophers(t_philo *philo);

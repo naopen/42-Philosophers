@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:38 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 23:10:19 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 02:42:04 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,15 @@ void	eat_utils(t_philo *philo)
 	waiter(philo->data->eat_time);
 	pthread_mutex_lock(&philo->key_mutex);
 	if (philo->data->argc == 6)
+	{
 		philo->nb_meals--;
+		if (philo->nb_meals == 0)
+		{
+			pthread_mutex_lock(&philo->data->all_finished);
+			philo->data->end_philo++;
+			pthread_mutex_unlock(&philo->data->all_finished);
+		}
+	}
 	philo->ate = 1;
 	pthread_mutex_unlock(&philo->key_mutex);
 }

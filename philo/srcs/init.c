@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:53:07 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:45:55 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 02:42:39 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_data	*init_philo(int argc, char **argv, t_data *data)
 	data->end_philo = 0;
 	data->argc = argc;
 	data->argv = argv;
+	pthread_mutex_init(&data->all_finished, NULL);
 	return (data);
 }
 

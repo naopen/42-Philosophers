@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:48:25 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 21:08:50 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 02:41:42 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,18 @@ int	check_finished(t_philo *philo)
 			break ;
 	}
 	return (1);
+}
+
+int	check_all_finished(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->all_finished);
+	if (philo->data->end_philo == philo->data->nb_philo)
+	{
+		pthread_mutex_unlock(&philo->data->all_finished);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->all_finished);
+	return (0);
 }
 
 int	dead_verify(t_philo *philo)
