@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:38 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:13:52 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:17:07 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	eat_utils(t_philo *philo)
 	philo->last_eat = get_current_time_ms();
 	pthread_mutex_unlock(&philo->key_mutex);
 	print_action(philo, EAT);
-	wait(philo->data->eat_time);
+	wait_for_ms(philo->data->eat_time);
 	pthread_mutex_lock(&philo->key_mutex);
 	if (philo->data->argc == 6)
 	{

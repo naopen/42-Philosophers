@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:15:40 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:17:07 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int					philo_think(t_philo *philo);
 
 long				get_current_time_ms(void);
 void				on_death(t_philo *philo);
-void				wait(long time);
+void				wait_for_ms(long time);
 void				wait_until_next_action(t_philo *philo);
 int					print_action(t_philo *philo, char *str);
 void				ft_bzero(void *s, size_t n);
