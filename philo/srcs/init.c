@@ -41,7 +41,7 @@ t_philo	*init_chain(t_philo *philo, t_data *data)
 			return (NULL);
 		i++;
 	}
-	create_circular(philo);
+	connect_philosophers_in_circle(philo);
 	return (philo);
 }
 

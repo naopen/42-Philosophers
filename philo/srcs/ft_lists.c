@@ -33,7 +33,7 @@ t_philo	*ft_lstnew(int id, t_data *data)
 	return (res);
 }
 
-void	create_circular(t_philo *philo)
+void	connect_philosophers_in_circle(t_philo *philo)
 {
 	t_philo	*first;
 

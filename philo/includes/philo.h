@@ -77,7 +77,7 @@ int					thread_join(t_philo *philo);
 
 
 int					ft_lstadd_back(t_philo *lst, t_philo *new);
-void				create_circular(t_philo *philo);
+void				connect_philosophers_in_circle(t_philo *philo);
 t_philo				*ft_lstnew(int id, t_data *data);
 
 int					ft_isdigit(int c);
