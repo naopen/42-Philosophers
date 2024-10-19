@@ -81,7 +81,7 @@ void				connect_philosophers_in_circle(t_philo *philo);
 t_philo				*ft_lstnew(int id, t_data *data);
 
 int					ft_isdigit(int c);
-int					ft_atoi(char *str);
+long				ft_atoi(const char *str);
 
 void				*routine(void *lophi);
 int					philo_eat(t_philo *philo);

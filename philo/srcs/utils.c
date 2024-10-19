@@ -19,9 +19,15 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atoi(const char *str)
 {
-	return ((int)ft_strtol(str, NULL, 10));
+	long	result;
+	char	*endptr;
+
+	result = ft_strtol(str, &endptr, 10);
+	if (*endptr != '\0' || result > INT_MAX || result < INT_MIN)
+		return (-1);  // エラー値として-1を返す
+	return (result);
 }
 
 void	ft_bzero(void *s, size_t n)

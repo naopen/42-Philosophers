@@ -15,22 +15,24 @@
 int	check_argv(char **argv)
 {
 	short	i;
-	short	j;
+	long	value;
 
 	i = 0;
 	while (argv[i])
 	{
-		j = 0;
-		while (argv[i][j])
+		value = ft_atoi(argv[i]);
+		if (value == -1 || value < 0)  // エラーまたは負の値をチェック
 		{
-			if (!ft_isdigit(argv[i][j]))
-				return (0);
-			j++;
+			printf("Error: Invalid argument '%s'\n", argv[i]);
+			return (0);
 		}
 		i++;
 	}
 	if (ft_atoi(argv[0]) < 1)
+	{
+		printf("Error: Number of philosophers must be at least 1\n");
 		return (0);
+	}
 	return (1);
 }
 
