@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork_management.c                                  :+:      :+:    :+:   */
+/*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:38 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:49:41 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 23:10:19 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	eat_utils(t_philo *philo)
 	pthread_mutex_lock(&philo->key_mutex);
 	if (philo->data->argc == 6)
 		philo->nb_meals--;
+	philo->ate = 1;
 	pthread_mutex_unlock(&philo->key_mutex);
 }
 
