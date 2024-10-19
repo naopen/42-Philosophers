@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/22 09:33:44 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 20:36:45 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,80 +14,84 @@
 # define PHILO_H
 
 # include <pthread.h>
-# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
 
-# define THINKING 0
-# define EATING 1
-# define SLEEPING 2
-# define DEAD 3
-# define FORK_REQUEST 1
-# define HAS_FORK 1
+# define FIRST 1
+# define SECOND 2
+# define FORK "has taken a fork"
+# define THINK "is thinking"
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define DIED "died"
 
-typedef struct s_fork
-{
-	pthread_mutex_t		mutex;
-	bool				is_dirty;
-	int					owner_id;
-}						t_fork;
-
-typedef struct s_philo	t_philo;
-
-typedef struct s_data
-{
-	int					num_philo;
-	int					time_to_die;
-	int					time_to_eat;
-	int					time_to_sleep;
-	int					num_must_eat;
-	long long			start_time;
-	bool				is_finished;
-	bool				someone_dead;
-	t_fork				*forks;
-	pthread_mutex_t		output_mutex;
-	pthread_mutex_t		print_mutex;
-	pthread_mutex_t		state_mutex;
-	t_philo				*philos;
-}						t_data;
+struct	s_data;
 
 typedef struct s_philo
 {
-	int					id;
-	long long			last_eat_time;
-	int					eat_count;
-	int					state;
-	pthread_t			thread;
-	t_fork				*left_fork;
-	t_fork				*right_fork;
-	t_data				*data;
-}						t_philo;
+	int				id;
+	int				ate;
+	long			last_eat;
+	pthread_t		pid;
+	int				nb_meals;
+	struct s_philo	*next;
+	pthread_mutex_t	fork;
+	pthread_mutex_t	key_mutex;
+	struct s_data	*data;
 
-// utils.c
-int						error_exit(t_data *data, char *message);
-long long				get_time(void);
-int						calculate_wait_time(int id, int num_philo);
-int						ft_atoi(const char *str);
+}					t_philo;
 
-// init.c
-int						init_data(t_data *data, int argc, char **argv);
-int						init_mutexes(t_data *data);
-int						init_philos(t_data *data);
-int						init_forks(t_data *data);
+typedef struct s_data
+{
+	int				nb_philo;
+	long			life_range;
+	long			eat_time;
+	long			sleep_time;
+	long			start_time;
+	int				is_dead;
+	int				end_philo;
+	pthread_mutex_t	all_finished;
+	pthread_mutex_t	smn_died;
+	int				argc;
+	char			**argv;
+}					t_data;
 
-// actions.c
-void					*philosopher_routine(void *arg);
-int						create_threads(t_data *data);
-void					philo_take_forks(t_philo *philo);
-void					philo_eat(t_philo *philo);
-void					philo_sleep(t_philo *philo);
-void					request_fork(t_philo *philo, t_fork *fork);
 
-// monitoring.c
-int						check_death(t_data *data);
-int						check_eat_count(t_data *data);
-void					print_action(t_philo *philo, int action);
+int					check_argv(char **argv);
+int					check_dead(t_philo *philo);
+int					check_finished(t_philo *philo);
+int					dead_verif(t_philo *philo);
+
+int					destroy_philosophers(t_philo *philo);
+
+void				eat_utils(t_philo *philo);
+int					if_eat(t_philo *philo);
+int					else_eat(t_philo *philo);
+
+int					init_args(int argc, char **argv, t_philo *philo, t_data *data);
+t_philo				*init_chain(t_philo *philo, t_data *data);
+int					thread_join(t_philo *philo);
+
+
+int					ft_lstadd_back(t_philo *lst, t_philo *new);
+void				create_circular(t_philo *philo);
+t_philo				*ft_lstnew(int id, t_data *data);
+
+int					ft_isdigit(int c);
+int					ft_atoi(char *str);
+
+void				*routine(void *lophi);
+int					philo_eat(t_philo *philo);
+int					sleepy(t_philo *philo);
+int					philo_think(t_philo *philo);
+
+long				time_get(void);
+void				one_died(t_philo *philo);
+void				waiter(long time);
+void				waiter_white(t_philo *philo);
+int					print_action(t_philo *philo, char *str);
 
 #endif

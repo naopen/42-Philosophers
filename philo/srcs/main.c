@@ -6,45 +6,77 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/09/22 09:52:42 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 20:46:12 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "philo.h"
+
+void	*routine(void *lophi)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)lophi;
+	if (philo->id % 2 == 0)
+		waiter(100);
+	while (1)
+	{
+		if (!check_dead(philo))
+			break ;
+		if (!philo_eat(philo))
+			break ;
+		if (!sleepy(philo))
+			break ;
+		if (!philo_think(philo))
+			break ;
+	}
+	return (0);
+}
+
+int	monitoring(t_philo *philo)
+{
+	t_philo	*first;
+	int		i;
+
+	first = philo;
+	i = 1;
+	while (philo)
+	{
+		pthread_mutex_lock(&philo->key_mutex);
+		if (philo->nb_meals == 0 && philo->data->argc == 6)
+			i++;
+		pthread_mutex_unlock(&philo->key_mutex);
+		if (!dead_verif(philo))
+			return (0);
+		philo = philo->next;
+		if (i == philo->data->nb_philo && philo->data->argc == 6)
+			return (0);
+		if (first == philo)
+			break ;
+	}
+	return (1);
+}
 
 int	main(int argc, char **argv)
 {
 	t_data	data;
-	int		i;
+	t_philo	philo;
 
-	if (init_data(&data, argc, argv) != 0)
-		return (1);
-	if (init_mutexes(&data) != 0)
-		return (1);
-	if (init_forks(&data) != 0)
-		return (1);
-	if (init_philos(&data) != 0)
-		return (1);
-	if (create_threads(&data) != 0)
-		return (1);
-	pthread_t death_monitor_thread;
-	pthread_t eat_monitor_thread;
-
-	pthread_create(&death_monitor_thread, NULL, (void *(*)(void *))check_death, &data);
-	pthread_create(&eat_monitor_thread, NULL, (void *(*)(void *))check_eat_count, &data);
-
-	pthread_join(death_monitor_thread, NULL);
-	pthread_join(eat_monitor_thread, NULL);
-	i = -1;
-	while (++i < data.num_philo)
-		pthread_join(data.philos[i].thread, NULL);
-	i = -1;
-	while (++i < data.num_philo)
-		pthread_mutex_destroy(&data.forks[i].mutex);
-	pthread_mutex_destroy(&data.output_mutex);
-	pthread_mutex_destroy(&data.state_mutex);
-	pthread_mutex_destroy(&data.print_mutex);
-	free(data.forks);
-	free(data.philos);
+	bzero(&data, sizeof(t_data));
+	bzero(&philo, sizeof(t_philo));
+	if (!(argc == 5 || argc == 6))
+		return (write(2, "Error\nWrong number of arguments\n", 32), 0);
+	if (!check_argv(argv + 1))
+		return (0);
+	if (!init_args(argc, argv + 1, &philo, &data))
+		return (0);
+	while (1)
+	{
+		if (!monitoring(&philo))
+			break ;
+	}
+	if (!thread_join(&philo))
+		return (0);
+	destroy_philosophers(&philo);
 	return (0);
 }

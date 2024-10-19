@@ -6,34 +6,20 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:52:42 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 22:45:46 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 20:46:26 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "philo.h"
 
-int	error_exit(t_data *data, char *message)
+int	ft_isdigit(int c)
 {
-	pthread_mutex_lock(&data->output_mutex);
-	printf("%s\n", message);
-	pthread_mutex_unlock(&data->output_mutex);
-	return (1);
+	if ((c >= '0') && (c <= '9'))
+		return (1);
+	return (0);
 }
 
-long long	get_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (((tv.tv_sec * 1000 * 1000) + tv.tv_usec) / 1000);
-}
-
-int	calculate_wait_time(int id, int num_philo)
-{
-	return (id * 1000 / num_philo);
-}
-
-int	ft_atoi(const char *str)
+int	ft_atoi(char *str)
 {
 	int	i;
 	int	sign;
@@ -42,18 +28,45 @@ int	ft_atoi(const char *str)
 	i = 0;
 	sign = 1;
 	result = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r')
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			sign = -1;
+			sign *= -1;
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[i] >= 48 && str[i] <= 57)
 	{
-		result = result * 10 + (str[i] - '0');
+		result = result * 10 + (str[i] - 48);
 		i++;
 	}
-	return (sign * result);
+	return (result * sign);
+}
+
+t_philo	*ft_lstlast(t_philo *lst)
+{
+	if (!lst)
+		return (0);
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
+}
+
+t_philo	*ft_lstfirst(t_philo *lst)
+{
+	if (!lst)
+		return (0);
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
+}
+
+int	ft_lstadd_back(t_philo *lst, t_philo *new)
+{
+	if (!lst || !new)
+		return (0);
+	ft_lstlast(lst)->next = new;
+	return (1);
 }
