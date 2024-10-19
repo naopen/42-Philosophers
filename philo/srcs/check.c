@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:48:25 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 02:41:42 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:10:42 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	dead_verify(t_philo *philo)
 {
 	long	time;
 
-	time = time_get();
+	time = get_current_time_ms();
 	pthread_mutex_lock(&philo->key_mutex);
 	if (time - philo->last_eat >= philo->data->life_range)
 	{

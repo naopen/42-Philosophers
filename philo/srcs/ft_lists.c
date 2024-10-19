@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 21:30:00 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 21:30:00 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:10:42 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_philo	*ft_lstnew(int id, t_data *data)
 	if (pthread_mutex_init(&(res->key_mutex), NULL) != 0)
 		return (NULL);
 	res->ate = 0;
-	res->last_eat = time_get();
+	res->last_eat = get_current_time_ms();
 	res->id = id;
 	res->next = NULL;
 	if (res->data->argc == 6)

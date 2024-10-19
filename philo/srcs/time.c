@@ -6,13 +6,13 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:04:38 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:10:42 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	time_get(void)
+long	get_current_time_ms(void)
 {
 	struct timeval	tv;
 
@@ -31,8 +31,8 @@ void	wait(long ms)
 {
 	long	start;
 
-	start = time_get();
-	while ((time_get() - start) < ms)
+	start = get_current_time_ms();
+	while ((get_current_time_ms() - start) < ms)
 		usleep(100);
 }
 
@@ -45,7 +45,7 @@ void	waiter_white(t_philo *philo)
 	last_meal = philo->last_eat;
 	pthread_mutex_unlock(&philo->key_mutex);
 	life_range = philo->data->life_range;
-	while ((time_get() - last_meal) < life_range - 10)
+	while ((get_current_time_ms() - last_meal) < life_range - 10)
 		usleep(100);
 }
 
@@ -53,7 +53,7 @@ int	print_action(t_philo *philo, char *str)
 {
 	long	time;
 
-	time = time_get();
+	time = get_current_time_ms();
 	pthread_mutex_lock(&philo->data->smn_died);
 	if (!philo->data->is_dead)
 		printf("%li %d %s\n", time - philo->data->start_time, philo->id, str);
