@@ -12,11 +12,11 @@
 
 #include "philo.h"
 
-void	*routine(void *lophi)
+void	*routine(void *philo_data)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *)lophi;
+	philo = (t_philo *)philo_data;
 	if (philo->id % 2 == 0)
 		waiter(100);
 	while (1)
