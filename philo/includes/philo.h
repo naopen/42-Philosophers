@@ -68,8 +68,8 @@ int					dead_verify(t_philo *philo);
 int					destroy_philosophers(t_philo *philo);
 
 void				eat_utils(t_philo *philo);
-int					if_eat(t_philo *philo);
-int					else_eat(t_philo *philo);
+int					eat_with_right_fork_first(t_philo *philo);
+int					eat_with_left_fork_first(t_philo *philo);
 
 int					init_args(int argc, char **argv, t_philo *philo, t_data *data);
 t_philo				*init_chain(t_philo *philo, t_data *data);

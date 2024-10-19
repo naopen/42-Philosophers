@@ -20,13 +20,13 @@ int	philo_eat(t_philo *philo)
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_unlock(&philo->key_mutex);
-		if (!if_eat(philo))
+		if (!eat_with_right_fork_first(philo))
 			return (0);
 	}
 	else
 	{
 		pthread_mutex_unlock(&philo->key_mutex);
-		if (!else_eat(philo))
+		if (!eat_with_left_fork_first(philo))
 			return (0);
 	}
 	return (1);

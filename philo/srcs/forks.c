@@ -25,7 +25,7 @@ void	eat_utils(t_philo *philo)
 	pthread_mutex_unlock(&philo->key_mutex);
 }
 
-int	if_eat(t_philo *philo)
+int	eat_with_right_fork_first(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->fork);
 	print_action(philo, FORK);
@@ -39,7 +39,7 @@ int	if_eat(t_philo *philo)
 	return (1);
 }
 
-int	else_eat(t_philo *philo)
+int	eat_with_left_fork_first(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->next->fork);
 	print_action(philo, FORK);
