@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:49:53 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:04:38 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ long	time_get(void)
 
 void	one_died(t_philo *philo)
 {
-	waiter(philo->data->life_range);
+	wait(philo->data->life_range);
 	print_action(philo, DIED);
 }
 
-void	waiter(long time)
+void	wait(long ms)
 {
 	long	start;
 
 	start = time_get();
-	while ((time_get() - start) < time)
+	while ((time_get() - start) < ms)
 		usleep(100);
 }
 

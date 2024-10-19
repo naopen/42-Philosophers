@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:56:16 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:50:39 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:03:28 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	philo_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->key_mutex);
 	time = (philo->data->sleep_time);
 	pthread_mutex_unlock(&philo->key_mutex);
-	waiter(time);
+	wait(time);
 	return (1);
 }
 
