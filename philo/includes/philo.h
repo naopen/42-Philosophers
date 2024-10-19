@@ -93,5 +93,6 @@ void				one_died(t_philo *philo);
 void				waiter(long time);
 void				waiter_white(t_philo *philo);
 int					print_action(t_philo *philo, char *str);
+void				ft_bzero(void *s, size_t n);
 
 #endif

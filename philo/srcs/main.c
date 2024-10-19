@@ -62,8 +62,8 @@ int	main(int argc, char **argv)
 	t_data	data;
 	t_philo	philo;
 
-	bzero(&data, sizeof(t_data));
-	bzero(&philo, sizeof(t_philo));
+	ft_bzero(&data, sizeof(t_data));
+	ft_bzero(&philo, sizeof(t_philo));
 	if (!(argc == 5 || argc == 6))
 		return (write(2, "Error: Wrong number of arguments\n", 33), 0);
 	if (!check_argv(argv + 1))
