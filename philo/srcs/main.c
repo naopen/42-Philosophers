@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:46:12 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 21:01:47 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*routine(void *lophi)
 			break ;
 		if (!philo_eat(philo))
 			break ;
-		if (!sleepy(philo))
+		if (!philo_sleep(philo))
 			break ;
 		if (!philo_think(philo))
 			break ;
@@ -65,7 +65,7 @@ int	main(int argc, char **argv)
 	bzero(&data, sizeof(t_data));
 	bzero(&philo, sizeof(t_philo));
 	if (!(argc == 5 || argc == 6))
-		return (write(2, "Error\nWrong number of arguments\n", 32), 0);
+		return (write(2, "Error: Wrong number of arguments\n", 33), 0);
 	if (!check_argv(argv + 1))
 		return (0);
 	if (!init_args(argc, argv + 1, &philo, &data))
