@@ -82,6 +82,7 @@ t_philo				*ft_lstnew(int id, t_data *data);
 
 int					ft_isdigit(int c);
 long				ft_atoi(const char *str);
+long				ft_strtol(const char *str, char **endptr, int base);
 
 void				*routine(void *lophi);
 int					philo_eat(t_philo *philo);

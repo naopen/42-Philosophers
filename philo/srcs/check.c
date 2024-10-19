@@ -16,19 +16,20 @@ int	check_argv(char **argv)
 {
 	short	i;
 	long	value;
+	char	*endptr;
 
 	i = 0;
 	while (argv[i])
 	{
-		value = ft_atoi(argv[i]);
-		if (value == -1 || value < 0)  // エラーまたは負の値をチェック
+		value = ft_strtol(argv[i], &endptr, 10);
+		if (*endptr != '\0' || value <= 0 || value > INT_MAX)
 		{
 			printf("Error: Invalid argument '%s'\n", argv[i]);
 			return (0);
 		}
 		i++;
 	}
-	if (ft_atoi(argv[0]) < 1)
+	if (ft_strtol(argv[0], &endptr, 10) < 1)
 	{
 		printf("Error: Number of philosophers must be at least 1\n");
 		return (0);
