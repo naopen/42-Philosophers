@@ -22,7 +22,6 @@ void	eat_utils(t_philo *philo)
 	pthread_mutex_lock(&philo->key_mutex);
 	if (philo->data->argc == 6)
 		philo->nb_meals--;
-	philo->ate = 1;
 	pthread_mutex_unlock(&philo->key_mutex);
 }
 
