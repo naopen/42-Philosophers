@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:14:29 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:15:40 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	wait(long ms)
 		usleep(100);
 }
 
-void	waiter_white(t_philo *philo)
+void	wait_until_next_action(t_philo *philo)
 {
 	long	last_meal;
 	long	life_range;

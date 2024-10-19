@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:56:16 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:03:28 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:15:40 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ int	philo_sleep(t_philo *philo)
 int	philo_think(t_philo *philo)
 {
 	print_action(philo, THINK);
-	waiter_white(philo);
+	wait_until_next_action(philo);
 	return (1);
 }
