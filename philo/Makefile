@@ -20,7 +20,7 @@ SRC_DIR = srcs
 OBJ_DIR = objs
 INC_DIR = includes
 
-SRC = actions.c check.c cleaner.c forks.c init.c list.c main.c time.c utils.c
+SRC = actions.c check.c cleaner.c forks.c init.c ft_lists.c main.c time.c utils.c
 OBJ = $(SRC:.c=.o)
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))

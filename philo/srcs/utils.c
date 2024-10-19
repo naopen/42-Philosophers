@@ -45,31 +45,6 @@ int	ft_atoi(char *str)
 	return (result * sign);
 }
 
-t_philo	*ft_lstlast(t_philo *lst)
-{
-	if (!lst)
-		return (0);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
-}
-
-t_philo	*ft_lstfirst(t_philo *lst)
-{
-	if (!lst)
-		return (0);
-	while (lst->next != NULL)
-		lst = lst->next;
-	return (lst);
-}
-
-int	ft_lstadd_back(t_philo *lst, t_philo *new)
-{
-	if (!lst || !new)
-		return (0);
-	ft_lstlast(lst)->next = new;
-	return (1);
-}
 void	ft_bzero(void *s, size_t n)
 {
 	unsigned char	*ptr;
