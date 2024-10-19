@@ -16,16 +16,20 @@ int	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->key_mutex);
 	if (philo->ate == 1)
-		return (pthread_mutex_unlock(&philo->key_mutex), 1);
+	{
+		philo->ate = 0;
+		pthread_mutex_unlock(&philo->key_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->key_mutex);
+	
 	if (philo->id % 2 == 0)
 	{
-		pthread_mutex_unlock(&philo->key_mutex);
 		if (!eat_with_right_fork_first(philo))
 			return (0);
 	}
 	else
 	{
-		pthread_mutex_unlock(&philo->key_mutex);
 		if (!eat_with_left_fork_first(philo))
 			return (0);
 	}
