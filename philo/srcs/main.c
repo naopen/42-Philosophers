@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 21:01:47 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 21:08:50 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	monitoring(t_philo *philo)
 		if (philo->nb_meals == 0 && philo->data->argc == 6)
 			i++;
 		pthread_mutex_unlock(&philo->key_mutex);
-		if (!dead_verif(philo))
+		if (!dead_verify(philo))
 			return (0);
 		philo = philo->next;
 		if (i == philo->data->nb_philo && philo->data->argc == 6)

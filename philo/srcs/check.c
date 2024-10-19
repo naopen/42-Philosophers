@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checks.c                                           :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:48:25 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:49:16 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 21:08:50 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	check_finished(t_philo *philo)
 	return (1);
 }
 
-int	dead_verif(t_philo *philo)
+int	dead_verify(t_philo *philo)
 {
 	long	time;
 
