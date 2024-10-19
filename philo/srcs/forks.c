@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:38 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:10:42 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:13:52 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	eat_with_left_fork_first(t_philo *philo)
 	pthread_mutex_lock(&philo->next->fork);
 	print_action(philo, FORK);
 	if (&philo->fork == &philo->next->fork)
-		return (pthread_mutex_unlock(&philo->fork), one_died(philo), 0);
+		return (pthread_mutex_unlock(&philo->fork), on_death(philo), 0);
 	pthread_mutex_lock(&philo->fork);
 	print_action(philo, FORK);
 	eat_utils(philo);
