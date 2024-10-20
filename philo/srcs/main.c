@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 21:08:50 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:42:47 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	*routine(void *philo_data)
 
 	philo = (t_philo *)philo_data;
 	if (philo->id % 2 == 0)
-		waiter(100);
+		wait_for_ms(100);
 	while (1)
 	{
-		if (!check_dead(philo))
+		if (!is_any_philosopher_dead(philo))
 			break ;
 		if (!philo_eat(philo))
 			break ;
@@ -46,7 +46,7 @@ int	monitoring(t_philo *philo)
 		if (philo->nb_meals == 0 && philo->data->argc == 6)
 			i++;
 		pthread_mutex_unlock(&philo->key_mutex);
-		if (!dead_verify(philo))
+		if (!is_philosopher_dead(philo))
 			return (0);
 		philo = philo->next;
 		if (i == philo->data->nb_philo && philo->data->argc == 6)

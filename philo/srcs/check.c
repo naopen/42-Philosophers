@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:48:25 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 21:08:50 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:42:47 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ int	check_argv(char **argv)
 	return (1);
 }
 
-int	check_dead(t_philo *philo)
+int	is_any_philosopher_dead(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->smn_died);
+	pthread_mutex_lock(&philo->data->death_mutex);
 	if (philo->data->is_dead == 1)
 	{
-		pthread_mutex_unlock(&philo->data->smn_died);
+		pthread_mutex_unlock(&philo->data->death_mutex);
 		return (0);
 	}
-	pthread_mutex_unlock(&philo->data->smn_died);
+	pthread_mutex_unlock(&philo->data->death_mutex);
 	return (1);
 }
 
@@ -70,18 +70,18 @@ int	check_finished(t_philo *philo)
 	return (1);
 }
 
-int	dead_verify(t_philo *philo)
+int	is_philosopher_dead(t_philo *philo)
 {
 	long	time;
 
-	time = time_get();
+	time = get_current_time_ms();
 	pthread_mutex_lock(&philo->key_mutex);
 	if (time - philo->last_eat >= philo->data->life_range)
 	{
 		pthread_mutex_unlock(&philo->key_mutex);
-		pthread_mutex_lock(&philo->data->smn_died);
+		pthread_mutex_lock(&philo->data->death_mutex);
 		philo->data->is_dead = 1;
-		pthread_mutex_unlock(&philo->data->smn_died);
+		pthread_mutex_unlock(&philo->data->death_mutex);
 		printf("%li %d %s\n", time - philo->data->start_time, philo->id,
 			DIED);
 		return (0);

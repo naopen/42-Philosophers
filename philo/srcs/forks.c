@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork_management.c                                  :+:      :+:    :+:   */
+/*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:38 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:49:41 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:41:21 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	eat_utils(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->key_mutex);
-	philo->last_eat = time_get();
+	philo->last_eat = get_current_time_ms();
 	pthread_mutex_unlock(&philo->key_mutex);
 	print_action(philo, EAT);
-	waiter(philo->data->eat_time);
+	wait_for_ms(philo->data->eat_time);
 	pthread_mutex_lock(&philo->key_mutex);
 	if (philo->data->argc == 6)
 		philo->nb_meals--;
@@ -44,7 +44,7 @@ int	eat_with_left_fork_first(t_philo *philo)
 	pthread_mutex_lock(&philo->next->fork);
 	print_action(philo, FORK);
 	if (&philo->fork == &philo->next->fork)
-		return (pthread_mutex_unlock(&philo->fork), one_died(philo), 0);
+		return (pthread_mutex_unlock(&philo->fork), on_death(philo), 0);
 	pthread_mutex_lock(&philo->fork);
 	print_action(philo, FORK);
 	eat_utils(philo);

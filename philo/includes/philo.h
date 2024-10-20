@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 22:39:46 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:42:47 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ typedef struct s_data
 	int				is_dead;
 	int				end_philo;
 	pthread_mutex_t	all_finished;
-	pthread_mutex_t	smn_died;
+	pthread_mutex_t	death_mutex;
 	int				argc;
 	char			**argv;
 }					t_data;
 
 
 int					check_argv(char **argv);
-int					check_dead(t_philo *philo);
+int					is_any_philosopher_dead(t_philo *philo);
 int					check_finished(t_philo *philo);
-int					dead_verify(t_philo *philo);
+int					is_philosopher_dead(t_philo *philo);
 
 int					destroy_philosophers(t_philo *philo);
 
@@ -92,10 +92,10 @@ int					philo_eat(t_philo *philo);
 int					philo_sleep(t_philo *philo);
 int					philo_think(t_philo *philo);
 
-long				time_get(void);
-void				one_died(t_philo *philo);
-void				waiter(long time);
-void				waiter_white(t_philo *philo);
+long				get_current_time_ms(void);
+void				on_death(t_philo *philo);
+void				wait_for_ms(long time);
+void				wait_until_next_action(t_philo *philo);
 int					print_action(t_philo *philo, char *str);
 void				ft_bzero(void *s, size_t n);
 

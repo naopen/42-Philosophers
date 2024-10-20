@@ -6,13 +6,13 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:49:53 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:41:21 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	time_get(void)
+long	get_current_time_ms(void)
 {
 	struct timeval	tv;
 
@@ -21,22 +21,22 @@ long	time_get(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	one_died(t_philo *philo)
+void	on_death(t_philo *philo)
 {
-	waiter(philo->data->life_range);
+	wait_for_ms(philo->data->life_range);
 	print_action(philo, DIED);
 }
 
-void	waiter(long time)
+void	wait_for_ms(long time)
 {
 	long	start;
 
-	start = time_get();
-	while ((time_get() - start) < time)
+	start = get_current_time_ms();
+	while ((get_current_time_ms() - start) < time)
 		usleep(100);
 }
 
-void	waiter_white(t_philo *philo)
+void	wait_until_next_action(t_philo *philo)
 {
 	long	last_meal;
 	long	life_range;
@@ -45,7 +45,7 @@ void	waiter_white(t_philo *philo)
 	last_meal = philo->last_eat;
 	pthread_mutex_unlock(&philo->key_mutex);
 	life_range = philo->data->life_range;
-	while ((time_get() - last_meal) < life_range - 10)
+	while ((get_current_time_ms() - last_meal) < life_range - 10)
 		usleep(100);
 }
 
@@ -53,10 +53,10 @@ int	print_action(t_philo *philo, char *str)
 {
 	long	time;
 
-	time = time_get();
-	pthread_mutex_lock(&philo->data->smn_died);
+	time = get_current_time_ms();
+	pthread_mutex_lock(&philo->data->death_mutex);
 	if (!philo->data->is_dead)
 		printf("%li %d %s\n", time - philo->data->start_time, philo->id, str);
-	pthread_mutex_unlock(&philo->data->smn_died);
+	pthread_mutex_unlock(&philo->data->death_mutex);
 	return (1);
 }

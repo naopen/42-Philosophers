@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:53:07 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 20:45:55 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:41:21 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	init_first(t_philo *philo, t_data *data)
 	philo->data = data;
 	philo->ate = 0;
 	philo->id = 1;
-	philo->last_eat = time_get();
+	philo->last_eat = get_current_time_ms();
 	philo->next = NULL;
 	if (philo->data->argc == 6)
 		philo->nb_meals = ft_atoi(data->argv[4]);
@@ -52,7 +52,7 @@ t_data	*init_philo(int argc, char **argv, t_data *data)
 	data->eat_time = ft_atoi(argv[2]);
 	data->sleep_time = ft_atoi(argv[3]);
 	data->is_dead = 0;
-	data->start_time = time_get();
+	data->start_time = get_current_time_ms();
 	data->end_philo = 0;
 	data->argc = argc;
 	data->argv = argv;
