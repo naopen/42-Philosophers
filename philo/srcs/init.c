@@ -56,7 +56,6 @@ t_data	*init_philo(int argc, char **argv, t_data *data)
 	data->end_philo = 0;
 	data->argc = argc;
 	data->argv = argv;
-	pthread_mutex_init(&data->all_finished, NULL);
 	return (data);
 }
 

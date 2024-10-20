@@ -33,6 +33,16 @@ t_philo	*ft_lstnew(int id, t_data *data)
 	return (res);
 }
 
+void	connect_philosophers_in_circle(t_philo *philo)
+{
+	t_philo	*first;
+
+	first = philo;
+	while (philo->next)
+		philo = philo->next;
+	philo->next = first;
+}
+
 t_philo	*ft_lstlast(t_philo *lst)
 {
 	if (!lst)
@@ -57,14 +67,4 @@ int	ft_lstadd_back(t_philo *lst, t_philo *new)
 		return (0);
 	ft_lstlast(lst)->next = new;
 	return (1);
-}
-
-void	connect_philosophers_in_circle(t_philo *philo)
-{
-	t_philo	*first;
-
-	first = philo;
-	while (philo->next)
-		philo = philo->next;
-	philo->next = first;
 }

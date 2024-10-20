@@ -24,7 +24,7 @@ void	*routine(void *philo_data)
 		if (!is_any_philosopher_dead(philo))
 			break ;
 		if (!philo_eat(philo))
-			continue ;
+			break ;
 		if (!philo_sleep(philo))
 			break ;
 		if (!philo_think(philo))

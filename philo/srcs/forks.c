@@ -21,16 +21,7 @@ void	eat_utils(t_philo *philo)
 	wait_for_ms(philo->data->eat_time);
 	pthread_mutex_lock(&philo->key_mutex);
 	if (philo->data->argc == 6)
-	{
 		philo->nb_meals--;
-		if (philo->nb_meals == 0)
-		{
-			pthread_mutex_lock(&philo->data->all_finished);
-			philo->data->end_philo++;
-			pthread_mutex_unlock(&philo->data->all_finished);
-		}
-	}
-	philo->ate = 1;
 	pthread_mutex_unlock(&philo->key_mutex);
 }
 
