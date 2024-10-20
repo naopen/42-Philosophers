@@ -35,7 +35,10 @@ int	eat_with_right_fork_first(t_philo *philo)
 	pthread_mutex_unlock(&philo->fork);
 	pthread_mutex_unlock(&philo->next->fork);
 	if (philo->data->argc == 6 && philo->nb_meals == 0)
+	{
+		print_action(philo, SLEEP);
 		return (0);
+	}
 	return (1);
 }
 
@@ -51,6 +54,9 @@ int	eat_with_left_fork_first(t_philo *philo)
 	pthread_mutex_unlock(&philo->next->fork);
 	pthread_mutex_unlock(&philo->fork);
 	if (philo->data->argc == 6 && philo->nb_meals == 0)
+	{
+		print_action(philo, SLEEP);
 		return (0);
+	}
 	return (1);
 }
