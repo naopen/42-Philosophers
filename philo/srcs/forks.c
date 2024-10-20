@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:38 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:17:07 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:41:21 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ int	eat_with_right_fork_first(t_philo *philo)
 	pthread_mutex_unlock(&philo->fork);
 	pthread_mutex_unlock(&philo->next->fork);
 	if (philo->data->argc == 6 && philo->nb_meals == 0)
+	{
+		print_action(philo, SLEEP);
 		return (0);
+	}
 	return (1);
 }
 
@@ -60,6 +63,9 @@ int	eat_with_left_fork_first(t_philo *philo)
 	pthread_mutex_unlock(&philo->next->fork);
 	pthread_mutex_unlock(&philo->fork);
 	if (philo->data->argc == 6 && philo->nb_meals == 0)
+	{
+		print_action(philo, SLEEP);
 		return (0);
+	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:57:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 13:51:51 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:42:47 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*routine(void *philo_data)
 		wait_for_ms(100);
 	while (1)
 	{
-		if (!is_any_philosopher_dead(philo) || check_all_finished(philo))
+		if (!is_any_philosopher_dead(philo))
 			break ;
 		if (!philo_eat(philo))
 			continue ;

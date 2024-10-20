@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 14:01:22 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:41:21 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,18 @@ long	get_current_time_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-void	wait_for_ms(long ms)
+void	on_death(t_philo *philo)
+{
+	wait_for_ms(philo->data->life_range);
+	print_action(philo, DIED);
+}
+
+void	wait_for_ms(long time)
 {
 	long	start;
 
 	start = get_current_time_ms();
-	while ((get_current_time_ms() - start) < ms)
+	while ((get_current_time_ms() - start) < time)
 		usleep(100);
 }
 

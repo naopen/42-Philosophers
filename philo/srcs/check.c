@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:48:25 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 14:04:56 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:42:47 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,18 @@ int	check_argv(char **argv)
 	return (1);
 }
 
+int	is_any_philosopher_dead(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->death_mutex);
+	if (philo->data->is_dead == 1)
+	{
+		pthread_mutex_unlock(&philo->data->death_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->data->death_mutex);
+	return (1);
+}
+
 int	check_finished(t_philo *philo)
 {
 	t_philo	*first;
@@ -55,30 +67,6 @@ int	check_finished(t_philo *philo)
 		if (first == philo)
 			break ;
 	}
-	return (1);
-}
-
-int	check_all_finished(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->all_finished);
-	if (philo->data->end_philo == philo->data->nb_philo)
-	{
-		pthread_mutex_unlock(&philo->data->all_finished);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->data->all_finished);
-	return (0);
-}
-
-int	is_any_philosopher_dead(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->death_mutex);
-	if (philo->data->is_dead == 1)
-	{
-		pthread_mutex_unlock(&philo->data->death_mutex);
-		return (0);
-	}
-	pthread_mutex_unlock(&philo->data->death_mutex);
 	return (1);
 }
 
