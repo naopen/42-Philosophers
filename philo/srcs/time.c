@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:49:50 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:17:07 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:01:22 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int	print_action(t_philo *philo, char *str)
 	long	time;
 
 	time = get_current_time_ms();
-	pthread_mutex_lock(&philo->data->smn_died);
+	pthread_mutex_lock(&philo->data->death_mutex);
 	if (!philo->data->is_dead)
 		printf("%li %d %s\n", time - philo->data->start_time, philo->id, str);
-	pthread_mutex_unlock(&philo->data->smn_died);
+	pthread_mutex_unlock(&philo->data->death_mutex);
 	return (1);
 }

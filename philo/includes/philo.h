@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:51:44 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 13:58:22 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 14:01:22 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ typedef struct s_data
 	long			start_time;
 	int				is_dead;
 	int				end_philo;
+	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	all_finished;
-	pthread_mutex_t	smn_died;
 	int				argc;
 	char			**argv;
 }					t_data;
