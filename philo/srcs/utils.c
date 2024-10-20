@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:52:42 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/19 22:39:33 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 15:57:41 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	ft_tolower(int c)
 		return (c + 32);
 	return (c);
 }
-
 
 long	ft_atoi(const char *str)
 {
