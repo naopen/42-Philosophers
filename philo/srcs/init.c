@@ -6,81 +6,90 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:53:07 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 22:45:57 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 03:10:42 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "philo.h"
 
-int	init_data(t_data *data, int argc, char **argv)
+int	init_first(t_philo *philo, t_data *data)
 {
-	if (argc != 5 && argc != 6)
-		return (error_exit(data, "Error: Invalid arguments"));
-	data->num_philo = ft_atoi(argv[1]);
-	data->time_to_die = ft_atoi(argv[2]);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
-	data->num_must_eat = -1;
-	if (argc == 6)
-		data->num_must_eat = ft_atoi(argv[5]);
-	if (data->num_philo <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
-		|| data->time_to_sleep <= 0 || (argc == 6 && data->num_must_eat <= 0))
-		return (error_exit(data, "Error: Invalid arguments"));
-	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
-		return (error_exit(data, "Error: Mutex init failed"));
-	return (0);
+	if (pthread_mutex_init(&(philo->fork), NULL) != 0)
+		return (0);
+	if (pthread_mutex_init(&(philo->key_mutex), NULL) != 0)
+		return (0);
+	philo->data = data;
+	philo->ate = 0;
+	philo->id = 1;
+	philo->last_eat = get_current_time_ms();
+	philo->next = NULL;
+	if (philo->data->argc == 6)
+		philo->nb_meals = ft_atoi(data->argv[4]);
+	return (1);
 }
 
-int	init_mutexes(t_data *data)
+t_philo	*init_chain(t_philo *philo, t_data *data)
 {
 	int	i;
 
-	data->forks = (t_fork *)malloc(sizeof(t_fork) * data->num_philo);
-	if (!data->forks)
-		return (error_exit(data, "Error: Malloc failed"));
-	i = -1;
-	while (++i < data->num_philo)
+	if (!init_first(philo, data))
+		return (NULL);
+	i = 2;
+	while (i <= data->nb_philo)
 	{
-		if (pthread_mutex_init(&data->forks[i].mutex, NULL) != 0)
-			return (error_exit(data, "Error: Mutex init failed"));
+		if (!ft_lstadd_back(philo, ft_lstnew(i, data)))
+			return (NULL);
+		i++;
 	}
-	if (pthread_mutex_init(&data->output_mutex, NULL) != 0)
-		return (error_exit(data, "Error: Mutex init failed"));
-	if (pthread_mutex_init(&data->state_mutex, NULL) != 0)
-		return (error_exit(data, "Error: Mutex init failed"));
-	return (0);
+	connect_philosophers_in_circle(philo);
+	return (philo);
 }
 
-int	init_philos(t_data *data)
+t_data	*init_philo(int argc, char **argv, t_data *data)
 {
-	int	i;
-
-	data->philos = (t_philo *)malloc(sizeof(t_philo) * data->num_philo);
-	if (!data->philos)
-		return (error_exit(data, "Error: Malloc failed"));
-	i = -1;
-	while (++i < data->num_philo)
-	{
-		data->philos[i].id = i + 1;
-		data->philos[i].eat_count = 0;
-		data->philos[i].last_eat_time = 0;
-		data->philos[i].state = THINKING;
-		data->philos[i].left_fork = &data->forks[i];
-		data->philos[i].right_fork = &data->forks[(i + 1) % data->num_philo];
-		data->philos[i].data = data;
-	}
-	return (0);
+	data->nb_philo = ft_atoi(argv[0]);
+	data->life_range = ft_atoi(argv[1]);
+	data->eat_time = ft_atoi(argv[2]);
+	data->sleep_time = ft_atoi(argv[3]);
+	data->is_dead = 0;
+	data->start_time = get_current_time_ms();
+	data->end_philo = 0;
+	data->argc = argc;
+	data->argv = argv;
+	pthread_mutex_init(&data->all_finished, NULL);
+	return (data);
 }
 
-int	init_forks(t_data *data)
+int	init_args(int argc, char **argv, t_philo *philo, t_data *data)
 {
-	int	i;
+	t_philo	*tmp;
 
-	i = -1;
-	while (++i < data->num_philo)
+	data = init_philo(argc, argv, data);
+	philo = init_chain(philo, data);
+	tmp = philo;
+	while (tmp)
 	{
-		data->forks[i].is_dirty = true;
-		data->forks[i].owner_id = i + 1;
+		if (pthread_create(&(tmp->pid), NULL, routine, tmp) == -1)
+			return (destroy_philosophers(philo), 0);
+		tmp = tmp->next;
+		if (tmp == philo)
+			break ;
 	}
-	return (0);
+	return (1);
+}
+
+int	thread_join(t_philo *philo)
+{
+	t_philo	*tmp;
+
+	tmp = philo;
+	while (tmp)
+	{
+		if (pthread_join(tmp->pid, NULL) != 0)
+			return (0);
+		tmp = tmp->next;
+		if (tmp == philo)
+			break ;
+	}
+	return (1);
 }

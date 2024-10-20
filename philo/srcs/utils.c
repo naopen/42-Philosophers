@@ -6,54 +6,51 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:52:42 by nkannan           #+#    #+#             */
-/*   Updated: 2024/07/22 22:45:46 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/19 22:39:33 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "philo.h"
 
-int	error_exit(t_data *data, char *message)
+int	ft_isdigit(int c)
 {
-	pthread_mutex_lock(&data->output_mutex);
-	printf("%s\n", message);
-	pthread_mutex_unlock(&data->output_mutex);
-	return (1);
+	if ((c >= '0') && (c <= '9'))
+		return (1);
+	return (0);
 }
 
-long long	get_time(void)
+int	ft_isalpha(int c)
 {
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (((tv.tv_sec * 1000 * 1000) + tv.tv_usec) / 1000);
+	if ((c <= 'z' && c >= 'a')
+		|| (c <= 'Z' && c >= 'A'))
+		return (1);
+	return (0);
 }
 
-int	calculate_wait_time(int id, int num_philo)
+int	ft_tolower(int c)
 {
-	return (id * 1000 / num_philo);
+	if ('A' <= c && c <= 'Z')
+		return (c + 32);
+	return (c);
 }
 
-int	ft_atoi(const char *str)
-{
-	int	i;
-	int	sign;
-	int	result;
 
-	i = 0;
-	sign = 1;
-	result = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = result * 10 + (str[i] - '0');
-		i++;
-	}
-	return (sign * result);
+long	ft_atoi(const char *str)
+{
+	long	result;
+	char	*endptr;
+
+	result = ft_strtol(str, &endptr, 10);
+	if (*endptr != '\0' || result > INT_MAX || result < INT_MIN)
+		return (-1);
+	return (result);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*ptr;
+
+	ptr = (unsigned char *)s;
+	while (n--)
+		*ptr++ = 0;
 }
