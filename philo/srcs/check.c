@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 20:48:25 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:10:42 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 13:57:44 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,6 @@ int	check_argv(char **argv)
 		printf("Error: Number of philosophers must be at least 1\n");
 		return (0);
 	}
-	return (1);
-}
-
-int	check_dead(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->smn_died);
-	if (philo->data->is_dead == 1)
-	{
-		pthread_mutex_unlock(&philo->data->smn_died);
-		return (0);
-	}
-	pthread_mutex_unlock(&philo->data->smn_died);
 	return (1);
 }
 
@@ -82,7 +70,19 @@ int	check_all_finished(t_philo *philo)
 	return (0);
 }
 
-int	dead_verify(t_philo *philo)
+int	is_any_philosopher_dead(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->smn_died);
+	if (philo->data->is_dead == 1)
+	{
+		pthread_mutex_unlock(&philo->data->smn_died);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->data->smn_died);
+	return (1);
+}
+
+int	is_philosopher_dead(t_philo *philo)
 {
 	long	time;
 

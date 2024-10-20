@@ -6,7 +6,7 @@
 /*   By: nkannan <nkannan@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 21:30:00 by nkannan           #+#    #+#             */
-/*   Updated: 2024/10/20 03:10:42 by nkannan          ###   ########.fr       */
+/*   Updated: 2024/10/20 13:57:28 by nkannan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,6 @@ t_philo	*ft_lstnew(int id, t_data *data)
 	return (res);
 }
 
-void	connect_philosophers_in_circle(t_philo *philo)
-{
-	t_philo	*first;
-
-	first = philo;
-	while (philo->next)
-		philo = philo->next;
-	philo->next = first;
-}
-
 t_philo	*ft_lstlast(t_philo *lst)
 {
 	if (!lst)
@@ -67,4 +57,14 @@ int	ft_lstadd_back(t_philo *lst, t_philo *new)
 		return (0);
 	ft_lstlast(lst)->next = new;
 	return (1);
+}
+
+void	connect_philosophers_in_circle(t_philo *philo)
+{
+	t_philo	*first;
+
+	first = philo;
+	while (philo->next)
+		philo = philo->next;
+	philo->next = first;
 }
